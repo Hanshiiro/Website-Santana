@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMK Santana 2 Cibatu | Profil Sekolah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ==========================================================================
+           CSS RESET & VARIABLES
+           ========================================================================== */
+        :root {
+            --bg-main: #07070b;
+            --bg-secondary: #12131c;
+            --accent-color: #00d4ff;
+            --accent-glow: rgba(0, 212, 255, 0.6);
+            --text-main: #ffffff;
+            --text-muted: #a0a0b0;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            text-decoration: none;
+            list-style: none;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           LOADING SCREEN
+           ========================================================================== */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 212, 255, 0.1);
+            border-top: 3px solid var(--accent-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* ==========================================================================
+           COMPONENTS (GLASSMORPHISM, BUTTONS, TITLES)
+           ========================================================================== */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: var(--transition);
+        }
+
+        .glass-card:hover {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+            border: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 30px var(--accent-glow);
+            transform: scale(1.05);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-color);
+            color: #000;
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: scale(1.05);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            display: block;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-glow);
+            border-radius: 5px;
+        }
+
+        section {
+            padding: 100px 8%;
+        }
+
+        /* Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==========================================================================
+           1. NAVBAR
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            background: rgba(7, 7, 11, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 15px 8%;
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo span {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .navbar ul {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .navbar ul li a {
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 1rem;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .navbar ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: var(--transition);
+            box-shadow: 0 0 8px var(--accent-glow);
+        }
+
+        .navbar ul li a:hover::after,
+        .navbar ul li a.active::after {
+            width: 100%;
+        }
+
+        .navbar ul li a:hover,
+        .navbar ul li a.active {
+            color: var(--accent-color);
+            text-shadow: 0 0 5px var(--accent-glow);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-main);
+            z-index: 1001;
+        }
+
+        /* ==========================================================================
+           2. HERO SECTION
+           ========================================================================== */
+        #home {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0 8%;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(7, 7, 11, 0.9) 0%, rgba(0, 10, 30, 0.8) 100%);
+            z-index: -1;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            mix-blend-mode: overlay;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero-content h1 span {
+            color: var(--accent-color);
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            min-height: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            animation: fadeInUp 1s ease 0.5s backwards;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ==========================================================================
+           3. PROFIL SEKOLAH
+           ========================================================================== */
+        #profil {
+            background-color: var(--bg-secondary);
+        }
+
+        .profil-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .profil-img {
+            width: 100%;
+            height: 400px;
+            border-radius: 20px;
+            background: #222;
+            background-image: url('logo santana 2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid var(--glass-border);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+        }
+
+        .profil-text h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+
+        .profil-text p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .visi-misi {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .vm-box {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .vm-box h4 {
+            color: var(--text-main);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .vm-box h4 i { color: var(--accent-color); }
+
+        /* ==========================================================================
+           4. JURUSAN
+           ========================================================================== */
+        .jurusan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .jurusan-card {
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .jurusan-card i {
+            font-size: 3.5rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px var(--accent-glow);
+            transition: var(--transition);
+        }
+
+        .jurusan-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .jurusan-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .jurusan-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .jurusan-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .jurusan-card:hover::before {
+            opacity: 1;
+        }
+
+        /* ==========================================================================
+           5. GALERI KEGIATAN
+           ========================================================================== */
+        #galeri {
+            background-color: var(--bg-secondary);
+        }
+
+        .galeri-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .galeri-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 250px;
+            background: #1a1a24;
+            cursor: pointer;
+        }
+
+        .galeri-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .galeri-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: var(--transition);
+            backdrop-filter: blur(3px);
+        }
+
+        .galeri-overlay i {
+            font-size: 2rem;
+            color: var(--accent-color);
+            transform: translateY(20px);
+            transition: var(--transition);
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .galeri-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .galeri-item:hover .galeri-overlay {
+            opacity: 1;
+        }
+
+        .galeri-item:hover .galeri-overlay i {
+            transform: translateY(0);
+        }
+
+        /* ==========================================================================
+           6. KONTAK & MEDIA SOSIAL
+           ========================================================================== */
+        .kontak-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 40px;
+        }
+
+        .kontak-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-box {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .info-box i {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 212, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .info-text h4 { margin-bottom: 5px; }
+        .info-text p { color: var(--text-muted); font-size: 0.9rem;}
+
+        .sosmed-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .sosmed-links a {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .sosmed-links a:hover {
+            background: var(--accent-color);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: translateY(-5px);
+        }
+
+        .map-container {
+            border-radius: 20px;
+            overflow: hidden;
+            height: 100%;
+            min-height: 350px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: invert(90%) hue-rotate(180deg) contrast(80%);
+        }
+
+        /* ==========================================================================
+           7. FOOTER & BACK TO TOP
+           ========================================================================== */
+        footer {
+            background: #030305;
+            padding: 30px 8%;
+            text-align: center;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        footer span {
+            color: var(--accent-color);
+        }
+
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--accent-glow);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #backToTop:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px var(--accent-glow);
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN (MOBILE & TABLET)
+           ========================================================================== */
+        @media (max-width: 991px) {
+            .profil-container, .kontak-container {
+                grid-template-columns: 1fr;
+            }
+            .hero-content h1 { font-size: 3rem; }
+            section { padding: 80px 5%; }
+            .map-container { min-height: 300px; }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            
+            header {
+                padding: 20px 5%;
+            }
+
+            header.scrolled {
+                padding: 15px 5%;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .navbar {
+                position: absolute;
+                top: 100%;
+                left: -100%;
+                width: 100%;
+                background: rgba(7, 7, 11, 0.98);
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+                border-bottom: 1px solid var(--glass-border);
+                transition: var(--transition);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            }
+
+            .navbar.active { left: 0; }
+
+            .navbar ul {
+                flex-direction: column;
+                text-align: center;
+                padding: 30px 0;
+                gap: 1.5rem;
+            }
+
+            .hero-content h1 { font-size: 2.2rem; }
+            .hero-content p { font-size: 1rem; }
+            .hero-buttons { flex-direction: column; gap: 12px; }
+            .btn { width: 100%; }
+            
+            .section-title { font-size: 2rem; }
+            
+            .visi-misi {
+                flex-direction: column; /* Mengatur susunan Vertikal di HP agar tidak gepeng */
+                gap: 15px;
+            }
+            
+            .profil-img {
+                height: 280px;
+            }
+            
+            #backToTop {
+                bottom: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <header id="header">
+        <a href="#" class="logo">
+            <div class="logo-img">S2C</div>
+            SMK Santana 2 <span>Cibatu</span>
+        </a>
+        
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <nav class="navbar" id="navbar">
+            <ul>
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#profil" class="nav-link">Profil</a></li>
+                <li><a href="#jurusan" class="nav-link">Jurusan</a></li>
+                <li><a href="#galeri" class="nav-link">Galeri</a></li>
+                <li><a href="#kontak" class="nav-link">Kontak</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1>SMK Santana 2 <span>Cibatu</span></h1>
+            <p><span class="typed-text">Mencetak Lulusan Unggul & Berkarakter</span><span class="cursor">|</span></p>
+            <div class="hero-buttons">
+                <a href="#profil" class="btn btn-primary">Lihat Profil</a>
+                <a href="#kontak" class="btn btn-outline">Hubungi Kami</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="profil">
+        <h2 class="section-title reveal">Profil Sekolah</h2>
+        <div class="profil-container reveal">
+            <div class="profil-img">
+                <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#555;"></div>
+            </div>
+            <div class="profil-text glass-card" style="padding: 30px;">
+                <h3>Sejarah & Dedikasi</h3>
+                <p>SMK Santana 2 Cibatu adalah institusi pendidikan kejuruan modern yang berdedikasi tinggi dalam mencetak lulusan kompeten, berkarakter, dan siap bersaing di era digital. Dilengkapi dengan fasilitas canggih dan kurikulum berbasis industri terkini.</p>
+                
+                <div class="visi-misi">
+                    <div class="vm-box glass-card">
+                        <h4><i class="fas fa-eye"></i> Visi</h4>
+                        <p style="font-size: 0.9rem; margin:0;">Menjadi lembaga pendidikan menengah kejuruan yang unggul, berkarakter, dan mampu menghasilkan lulusan yang kompeten serta berdaya saing di dunia kerja dan industri.</p>
+                    </div>
+                    <div class="vm-box glass-card">
+                        <h4><i class="fas fa-bullseye"></i> Misi</h4>
+                        <p style="font-size: 0.9rem; margin:0;">Menyelenggarakan pendidikan berbasis teknologi, mengedepankan link & match dengan industri global.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="jurusan">
+        <h2 class="section-title reveal">Program Keahlian</h2>
+        <div class="jurusan-grid reveal">
+            <div class="jurusan-card glass-card">
+                <i class="fas fa-laptop-code"></i>
+                <h3>Rekayasa Perangkat Lunak (RPL)</h3>
+                <p>Mempelajari coding, pengembangan website, aplikasi mobile, dan rekayasa software modern untuk memenuhi kebutuhan industri IT global.</p>
+            </div>
+
+            <div class="jurusan-card glass-card">
+                <i class="fas fa-briefcase"></i>
+                <h3>Manajemen Perkantoran (MPLB)</h3>
+                <p>Membentuk tenaga administrasi profesional, ahli dalam layanan bisnis, kesekretariatan digital, dan manajemen perkantoran era modern.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="galeri">
+        <h2 class="section-title reveal">Galeri Kegiatan</h2>
+        <div class="galeri-grid reveal">
+            <div class="galeri-item">
+                <img src="foto1.jpeg" alt="Kegiatan 1">
+                <div class="galeri-overlay">
+                    <a href="foto1.jpeg" class="fas fa-search-plus"></a>
+                </div>
+            </div>
+            <div class="galeri-item">
+                <img src="foto2.jpeg" alt="Kegiatan 2">
+                <div class="galeri-overlay">
+                    <a href="foto2.jpeg" class="fas fa-search-plus"></a>
+                </div>
+            </div>
+            <div class="galeri-item">
+                <img src="foto3.jpeg" alt="Kegiatan 3">
+                <div class="galeri-overlay">
+                    <a href="foto3.jpeg" class="fas fa-search-plus"></a>
+                </div>
+            </div>
+            <div class="galeri-item">
+                <img src="foto4.jpeg" alt="Kegiatan 4">
+                <div class="galeri-overlay">
+                    <a href="foto4.jpeg" class="fas fa-search-plus"></a>
+                </div>
+            </div>
+            <div class="galeri-item">
+                <img src="foto5.jpeg" alt="Kegiatan 5">
+                <div class="galeri-overlay">
+                    <a href="foto5.jpeg" class="fas fa-search-plus"></a>
+                </div>
+            </div>
+            <div class="galeri-item">
+                <img src="foto6.jpeg" alt="Kegiatan 6">
+                <div class="galeri-overlay">
+                    <a href="foto6.jpeg" class="fas fa-search-plus"></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kontak">
+        <h2 class="section-title reveal">Hubungi Kami</h2>
+        <div class="kontak-container reveal">
+            <div class="kontak-info">
+                <div class="info-box glass-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div class="info-text">
+                        <h4>Alamat Sekolah</h4>
+                        <p>Jalan Siliwangi No. 92, Desa Keresek, Kecamatan Cibatu, Kabupaten Garut, Jawa Barat, kode pos 44185</p>
+                    </div>
+                </div>
+                <div class="info-box glass-card">
+                    <i class="fas fa-phone-alt"></i>
+                    <div class="info-text">
+                        <h4>Telepon</h4>
+                        <p>+62 877-2514-9746</p>
+                    </div>
+                </div>
+                <div class="info-box glass-card">
+                    <i class="fas fa-envelope"></i>
+                    <div class="info-text">
+                        <h4>Email</h4>
+                        <p>ypksantana@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="info-box glass-card" style="flex-direction: column; align-items:flex-start;">
+                    <h4>Ikuti Media Sosial Kami</h4>
+                    <div class="sosmed-links">
+                        <a href="https://www.instagram.com/smksantana2cibatu/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/SMKSANTANA2GARUT/photos/?locale=ms_MY"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-container glass-card">
+                <iframe src="https://maps.google.com/maps?q=SMK%20Santana%202%20Cibatu&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© <span id="year"></span> <span>SMK Santana 2 Cibatu</span>. All Rights Reserved.</p>
+    </footer>
+
+    <button id="backToTop" title="Go to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <script src="script.js">
+    </script>
+</body>
+</html>
